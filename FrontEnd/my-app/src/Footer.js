@@ -15,8 +15,9 @@ export default function Footer() {
         <footer className="py-3 bg-dark text-light">
         <div className="container">
             {/* naivebaker and quicklinks */}
+            
             <div className="row justify-content-between">
-                <div className="col-6">
+                <div className="col-6 ">
                     <h6>ABOUT</h6>                    
                     <p className="text-justify text-secondary">
                         <b>FoodHUB</b> is a platform where you can search recipes by name or by image and get a detailed description
@@ -25,8 +26,8 @@ export default function Footer() {
                     </p>
                     <p className="text-justify text-secondary">ENJOY COOKING</p>
                 </div>
-
-                <div className="col-md-5" style={{width: "fit-content"}}>
+            
+                <div className="col-md-5 " style={{width: "fit-content"}}>
                     <h6>QUICK LINKS</h6>
                     <ul className="list-unstyled">
                         <li><Link className="nav-link text-secondary" to="/">Home</Link></li>
@@ -38,7 +39,7 @@ export default function Footer() {
                     </ul>
                 </div>
             </div>
-
+            
             {/* copyright and social-media-links */}
             <div className="d-flex flex-column flex-sm-row justify-content-between py-2 border-top">
                 <p>

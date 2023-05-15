@@ -1,7 +1,9 @@
+import React from 'react'
+
 export default function Home () {
     return(
         <div>
-            <img src='https://cdn.pixabay.com/photo/2017/05/02/18/20/blueberries-2278921_960_720.jpg' style={{width:'1519px'}}/>
+            <img src='https://www.merchfuse.com/wp-content/uploads/2022/09/Who-is-Akaza-scaled-1400x788.jpg' style={{width: '100%', height: '100%', objectFit: 'cover'}}/>
         </div>
     )
 }
