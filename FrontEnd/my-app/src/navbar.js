@@ -35,7 +35,7 @@ export default function Navbars() {
         <Navbar.Brand href="/" className="mr-auto font-weight-bold">FoodHUB</Navbar.Brand>
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="w-100 justify-content-between">
-            <Nav.Link href="/SeachByName" className="ms-2 font-weight-bold">Search By Name</Nav.Link>
+            <Nav.Link href="/SearchByName" className="ms-2 font-weight-bold">Search By Name</Nav.Link>
             <Nav.Link href="/SearchByImage" className="ms-2 font-weight-bold">Search by Image</Nav.Link>
             <Nav.Link href="/Blogs" className="ms-2 font-weight-bold">View Blogs</Nav.Link>
             <Nav.Link href="/AboutUs" className="me-5 font-weight-bold">About Us</Nav.Link>

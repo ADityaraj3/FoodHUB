@@ -6,17 +6,27 @@ import SearchByImage from "./SearchByImage";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
 import { UserContextProvider } from "./UserContext";
-
+import SearchByName from "./Pages/SearchByName";
+import Pages from "./Pages/Pages";
+import Searched from "./Pages/Searched";
+import Cuisine from "./Pages/Cuisine";
+import Recipe from "./Pages/Recipe";
 function App() {
   return (
     <UserContextProvider>
       <Router>
       <Routes>
+        
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />}/>
+          <Route path='/SearchByName' element={<SearchByName/>}/>
           <Route path='/SearchByImage' element={<SearchByImage />}/>
-          <Route path='/login' element={<LoginPage />} />
+          <Route path='/login' element={<LoginPage />} /> 
           <Route path='/register' element={<RegisterPage/>}/>
+          <Route path="/pages/*" element={<Pages />} />
+          <Route path="/cuisine/:type" element={<Cuisine/>}/>
+          <Route path="/searched/:search" element={<Searched/>}/>
+          <Route path="/recipe/:name" element={<Recipe/>}/>
         </Route>
       </Routes>
     </Router>
