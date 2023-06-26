@@ -14,21 +14,21 @@ function Searched() {
 
     const getSearched = async (name) => {
         
-        const api = await axios.get(`https://api.edamam.com/api/recipes/v2?type=public&app_id=8b57e74c&app_key=a399cb95b38c4317f04f4c3920053006&q=${name}`)
-        // const data = await api.json();
-        // console.log(data.recipes);
-        setSearchedRecipes(api.data.hits);
+        const api = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&query=${name}`)
+        const data = await api.json();
+        console.log(data.results);
+        setSearchedRecipes(data.results);
 
     };
 
     return (
-    <Grid>
+        <Grid>
         {searchedRecipes.map((item) => {
             return(
-                <Card>
-                    <Link to={"/recipe/"+item.recipe.label}>
-                    <img src={item.recipe.image}/>
-                    <h4>{item.recipe.label}</h4>
+                <Card key={item.id}>
+                    <Link to={"/recipe/"+item.id}>
+                    <img src={item.image}/>
+                    <h4>{item.title}</h4>
                     </Link>
                 </Card>
             )
@@ -36,7 +36,6 @@ function Searched() {
     </Grid>
   )
 }
-
 export default Searched
 
 const Grid = styled.div`

@@ -16,21 +16,19 @@ function Cuisine() {
 
     const getCuisines = async (name) => {
         // console.log(name);
-        const api = await axios.get(`https://api.edamam.com/api/recipes/v2?type=public&app_id=8b57e74c&app_key=a399cb95b38c4317f04f4c3920053006&cuisineType=${name}`)
-        // const data = await api.json();
-        // console.log(data.recipes);
-        console.log(api);
-        setCusines(api.data.hits);
+        const api = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine=${name}`)
+        const data = await api.json();
+        setCusines(data.results);
     }
 
   return (
     <Grid>
       {cuisines.map((item)=>{
         return(
-            <Card >
-                <Link to={"/recipe/"+item.recipe.label}>
-                <img src={item.recipe.image} alt=""/>
-                <h4>{item.recipe.label}</h4>
+            <Card key={item.id}>
+                <Link to={"/recipe/"+item.id}>
+                <img src={item.image} alt=""/>
+                <h4>{item.title}</h4>
                 </Link>
             </Card>
             

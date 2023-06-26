@@ -5,61 +5,73 @@
     function Recipe() {
     
         let params = useParams();
-        const [details,setDetails] = useState([]);
-        const [activeTab, setActiveTab] = useState("Ingredients");
+        const [details,setDetails] = useState({});
+        const [nutrition, setNutrition] = useState([]);
+        const [activeTab, setActiveTab] = useState('');
         useEffect(() => {
             fetchDetails();
-        },[params.name]); 
+        },[params.name]);
 
         const fetchDetails = async() => {
             console.log(params.name);
-            const data = await axios.get(`https://api.edamam.com/search?q=${params.name}&app_id=7c6af569&app_key=3f0fd2ff96800c442bcabe94c0c4f7dd`);
-            console.log(data.data.hits)
-            setDetails(data.data.hits);    
+            const data = await fetch(`https://api.spoonacular.com/recipes/${params.name}/information?apiKey=${process.env.REACT_APP_API_KEY}`)
+            const recipeData = await data.json();
+            
+            const Ndata = await fetch(`https://api.spoonacular.com/recipes/${params.name}/nutritionWidget.json?apiKey=${process.env.REACT_APP_API_KEY}`)
+            const nndata = await Ndata.json();
+            setNutrition(nndata);
+            console.log(nndata);
+            console.log(recipeData);
+            setDetails(recipeData);    
         }
-        return (
-        <>
-        
-        <div>
-            {details.map((item) => {
-                if(item.recipe.label===params.name){
-                    return (
-                        <DetailWrapper>
-                            <div>
-                                <h2>{item.recipe.label}</h2>
-                                <ImageWrapper>
-                                <img src={item.recipe.image} alt=""/>
-                                <h3>{String(item.recipe.cuisineType).toUpperCase()}</h3>
-                                </ImageWrapper>
- 
-                            </div>
-                            <Info>
-                                <Button className={activeTab==="Ingredients"?"active":""} onClick={() => setActiveTab("Ingredients")}>Ingredients</Button>
-                                <Button className={activeTab==="Nutrition"?"active":""} onClick={() => setActiveTab("Nutrition")}>Diet Label</Button>
-                                {activeTab==='Ingredients' && (
-                                    <ul>
-                                    {item.recipe.ingredients.map((ingredient) => (
-                                        <li>{ingredient.text}</li>
-                                    ))}
-                                </ul>
-                                )}
 
-                                {activeTab==='Nutrition' && (
-                                    <ul>
-                                    {item.recipe.dietLabels.map((nutrient) => (
-                                        <li>{nutrient}</li>
-                                    ))}
-                                    <li>{item.recipe.calories.toFixed(2) +" grams"}</li>
-                                    
-                                </ul>
-                                )}
-                            </Info>
-                        </DetailWrapper>
-                    )
-                }
-            })}
+        return (
+        <div>
+            <DetailWrapper>
+                <div>
+                    <h2>{details.title}</h2>
+                    <ImageWrapper>
+                    <img src={details.image} alt=""/>
+                    {/* <h3>{String(item.recipe.cuisineType).toUpperCase()}</h3> */}
+                    </ImageWrapper>
+
+                </div>
+                <Info>
+                    <Button className={activeTab==="Ingredients"?"active":""} onClick={() => setActiveTab("Ingredients")}>Ingredients</Button>
+                    <Button className={activeTab==="Instructions"?"active":""} onClick={() => setActiveTab("Instructions")}>Instructions</Button>
+                    <Button className={activeTab==="Nutrition"?"active":""} onClick={() => setActiveTab("Nutrition")}>Nutrition</Button>
+                    {activeTab==='Ingredients' && (
+                        <ul>
+                        {details.extendedIngredients.map((ingredient) => (
+                            <li key={ingredient.id}>{ingredient.original}</li>
+                        ))}
+                    </ul>
+                    )}
+
+                    {activeTab==='Instructions' && (
+                        <div>
+                            <h3 dangerouslySetInnerHTML={{__html: details.summary}}></h3>
+                            <h3 dangerouslySetInnerHTML={{__html: details.instructions}}></h3>
+                        </div>    
+                    
+                    )}
+
+                    {activeTab==='Nutrition' && (
+                        <div>
+                            <ul>
+                                <li>Calories: {nutrition.calories}</li>
+                                <li>Carbs: {nutrition.carbs}</li>
+                                <li>Fat: {nutrition.fat}</li>
+                                {nutrition.good.map((nutri) => (
+                                    <li key={nutri.title}>{nutri.title}: {nutri.amount}</li>
+                                ))}
+                            </ul>
+                        </div>    
+                    
+                    )}
+                </Info>
+            </DetailWrapper>
         </div>
-        </>
     )
     }
 

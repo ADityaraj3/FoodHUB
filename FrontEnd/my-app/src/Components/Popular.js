@@ -7,6 +7,7 @@ import axios from 'axios';
 
 function Popular() {
 
+
     const[recipes,setDetails] = useState([]);
 
     useEffect(() => {
@@ -14,10 +15,10 @@ function Popular() {
       }, []);
     
       const getpopular = async() => {
-        const api = await axios.get(`https://api.edamam.com/api/recipes/v2?type=public&app_id=8b57e74c&app_key=a399cb95b38c4317f04f4c3920053006&cuisineType=Asian`)
-        // const data = await api.json();
-        // console.log(data.recipes);
-        setDetails(api.data.hits);
+        const api = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${process.env.REACT_APP_API_KEY}&number=9`)
+        const data = await api.json();
+        console.log(data.recipes);
+        setDetails(data.recipes);
     };
     
   return (
@@ -32,14 +33,14 @@ function Popular() {
                 gap: '5rem', 
             }} >
                 {recipes.map((recipe) => {
-                    const label = recipe.recipe.label.split(' ').slice(0, 2).join(' ');
-                    const truncatedLabel = `${recipe.recipe.label}...`;
+                    const label = recipe.title.split(' ').slice(0, 2).join(' ');
+                    const truncatedLabel = `${label}...`;
                     return(                       
-                        <SplideSlide>
+                        <SplideSlide key={recipe.id}>
                         <Card>
-                            <p>{truncatedLabel}</p>
-                            <Link to={'/recipe/'+recipe.recipe.label}>
-                            <img src={recipe.recipe.image} alt={recipe.recipe.label}/>
+                            <p>{truncatedLabel  }</p>
+                            <Link to={'/recipe/'+recipe.id}>
+                            <img src={recipe.image} alt={recipe.title}/>
                             </Link>
                         </Card>
                         </SplideSlide>
@@ -50,7 +51,6 @@ function Popular() {
     </div>
   )
 }
-
 const Wrapper = styled.div`
     margin: 4rem 0rem;
 `;
