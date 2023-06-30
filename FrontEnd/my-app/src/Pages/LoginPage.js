@@ -2,8 +2,11 @@ import { useContext, useState } from 'react'
 import './Pages.css'
 import {Navigate} from "react-router-dom"
 import { UserContext } from '../UserContext';
-
-export default function LoginPage(){
+import {auth,provider} from '../firebase-config'
+import {signInWithPopup} from "firebase/auth"
+import { useNavigate } from 'react-router-dom';
+export default function LoginPage({setIsAuth}){
+    let navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
@@ -30,8 +33,15 @@ export default function LoginPage(){
     if(redirect){
         return <Navigate to={'/'}/>
     }
-
+    const signInWithGoogle = () => {
+        signInWithPopup(auth, provider).then(() => {
+            localStorage.setItem("isAuth", true);
+            setIsAuth(true);
+            navigate("/");
+        })
+    }
     return(
+       <>
         <form className="login" onSubmit={login}>
             <h1>Login</h1>
             <input type="text" 
@@ -44,5 +54,11 @@ export default function LoginPage(){
                    onChange={ev => setPassword(ev.target.value)}/>
             <button>Login</button>
         </form>
+        <br></br>
+        <div className="loginPage">
+            <button className="login-with-google-btn" onClick={signInWithGoogle}>Sign with google</button>
+        </div>
+
+        </>
     );
 }
