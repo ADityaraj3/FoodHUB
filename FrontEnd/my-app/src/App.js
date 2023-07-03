@@ -21,7 +21,7 @@ function App() {
       <Router>
       <Routes>
         
-        <Route path="/" element={<Layout setIsAuth={setIsAuth}/>}>
+        <Route path="/" element={<Layout setIsAuth={setIsAuth} isAuth={isAuth}/>}>
           <Route index element={<Home />}/>
           <Route path='/SearchByName' element={<SearchByName/>}/>
           <Route path='/SearchByImage' element={<SearchByImage />}/>

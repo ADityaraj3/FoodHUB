@@ -5,11 +5,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.css';
 import {useContext, useEffect} from "react";
 import { UserContext } from './UserContext';
-import {auth,provider} from './firebase-config'
-import {signInWithPopup} from "firebase/auth"
-import { useNavigate } from 'react-router-dom';
 
-export default function Navbars({setIsAuth}) {
+import {useNavigate} from "react-router-dom"
+export default function Navbars({ setIsAuth, isAuth }) {
     let navigate = useNavigate();
     const {setUserInfo, userInfo} = useContext(UserContext);
     useEffect(() => {
@@ -29,7 +27,9 @@ export default function Navbars({setIsAuth}) {
       });
       setUserInfo(null);
 
-
+      localStorage.setItem("isAuth", false);
+      setIsAuth(false);
+      navigate("/");
 
     }
 
@@ -52,13 +52,13 @@ export default function Navbars({setIsAuth}) {
           </Nav>
         </Navbar.Collapse>
         <Nav className="ml-auto">
-          {(  username) && (
+          {( isAuth ||  username) && (
             <>
               <Button variant="primary" style={{ background: '#005A9C' }} onClick={logout}>Logout</Button>
             </>
           )}
 
-          {( !username) && (
+          {( !isAuth && !username) && (
             <>
               <Button href='/login' variant="primary" style={{ background: '#005A9C' }} >Login</Button>
               <Button href='/register' variant="primary" style={{ background: '#005A9C' }}>Register</Button>
