@@ -5,20 +5,26 @@ import Navbar from 'react-bootstrap/Navbar';
 import 'bootstrap/dist/css/bootstrap.css';
 import {useContext, useEffect} from "react";
 import { UserContext } from './UserContext';
-
+import {signOut} from  "firebase/auth"
 import {useNavigate} from "react-router-dom"
+import {auth} from './firebase-config'
 export default function Navbars({ setIsAuth, isAuth }) {
+
+
     let navigate = useNavigate();
     const {setUserInfo, userInfo} = useContext(UserContext);
     useEffect(() => {
-      fetch('http://localhost:4000/profile', {
-        credentials: 'include',
-      }).then(response => {
-        response.json().then(userInfo => {
-          setUserInfo(userInfo);
-        });
+     const isUserAuthenticated = localStorage.getItem('isAuth') === 'true';
+    setIsAuth(isUserAuthenticated);
+
+    fetch('http://localhost:4000/profile', {
+      credentials: 'include',
+    }).then((response) => {
+      response.json().then((userInfo) => {
+        setUserInfo(userInfo);
       });
-    }, []);
+    });
+  }, [setIsAuth, setUserInfo]);
 
     function logout(){
       fetch('http://localhost:4000/logout' , {
@@ -27,9 +33,11 @@ export default function Navbars({ setIsAuth, isAuth }) {
       });
       setUserInfo(null);
 
-      localStorage.setItem("isAuth", false);
-      setIsAuth(false);
-      navigate("/");
+      signOut(auth).then(()=> {
+        localStorage.clear();
+        setIsAuth(false);
+        navigate("/login");
+      })
 
     }
 
@@ -52,7 +60,7 @@ export default function Navbars({ setIsAuth, isAuth }) {
           </Nav>
         </Navbar.Collapse>
         <Nav className="ml-auto">
-          {( isAuth ||  username) && (
+          {( isAuth ||   username) && (
             <>
               <Button variant="primary" style={{ background: '#005A9C' }} onClick={logout}>Logout</Button>
             </>
