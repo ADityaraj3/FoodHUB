@@ -21,7 +21,9 @@ app.post('/register', async (req, res) => {
     try{
         const userDoc= await User.create({
             username,
-            password: bcrypt.hashSync(password, salt)
+            password: bcrypt.hashSync(password, salt),
+            height:"120",
+            weight:"50",
         });
         res.json(userDoc);
     }catch(e){
@@ -36,11 +38,13 @@ app.post('/login', async (req,res) => {
     const passOk = bcrypt.compareSync(password, userDoc.password);
     if(passOk){
         //logged in
-        jwt.sign({username, id:userDoc._id}, secret, {}, (err, token) =>{
+        jwt.sign({username, id:userDoc._id, height:userDoc.height, weight:userDoc.weight}, secret, {}, (err, token) =>{
             if(err) throw err;
             res.cookie('token', token).json({
                 id: userDoc._id,
                 username,
+                height:userDoc.height,
+                weight:userDoc.weight,
             });
         });
     } else {
@@ -59,6 +63,28 @@ app.get('/profile', (req,res) => {
 app.post('/logout', (req,res) => {
     res.cookie('token', '').json('ok');
 })
+
+app.put('/update', async (req, res) => {
+  // res.json(req);
+  const { username, password, newHeight, newWeight } = req.body;
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { username: username },
+      { password: bcrypt.hashSync(password, salt), height: newHeight, weight: newWeight },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      res.status(404).json({ error: 'User not found' });
+    }
+
+    else res.json(updatedUser);
+  } catch (error) {
+    console.error('Error updating user data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 app.listen(4000);
 

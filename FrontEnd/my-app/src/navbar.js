@@ -63,6 +63,7 @@ export default function Navbars({ setIsAuth, isAuth }) {
           {( isAuth ||   username) && (
             <>
               <Button variant="primary" style={{ background: '#005A9C' }} onClick={logout}>Logout</Button>
+              <Button href='/Profile' variant="primary" style={{ background: '#005A9C' }} >Profile</Button>
             </>
           )}
 

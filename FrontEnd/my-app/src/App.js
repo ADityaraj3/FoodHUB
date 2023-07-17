@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes,Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import './App.css';
 import Layout from "./Layout";
 import Home from "./Home";
@@ -14,6 +14,7 @@ import Recipe from "./Pages/Recipe";
 import CreatePost from "./Pages/CreatePost"
 import { useState } from "react";
 import ViewPost from "./Pages/ViewPost";
+import ProfilePage from "./Pages/Profile";
 function App() {
   const [isAuth, setIsAuth] = useState(false);
   return (
@@ -33,6 +34,8 @@ function App() {
           <Route path="/recipe/:name" element={<Recipe/>}/>
           <Route path="/createpost" element={<CreatePost/>}/>
           <Route path="/viewpost" element={<ViewPost isAuth={isAuth}/>}/>
+          <Route path="/Profile" element={<ProfilePage/>}/>
+          <Route path="/update" element={<ProfilePage/>}/>
         </Route>
       </Routes>
     </Router>
